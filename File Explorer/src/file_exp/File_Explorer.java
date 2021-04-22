@@ -17,7 +17,11 @@ public class File_Explorer {
 			 System.out.println("2. Exit Application");
 			 System.out.print("Enter your choice----->");
 			 choice=integerchoice();
-			 if(choice==0)continue;
+			 if(choice==0)
+			 {
+				 System.out.println("Invalid Input! Please Enter a valid Numeric Input!");
+				 continue;
+			 }	 
 			 System.out.println("You chose the option --> "+choice);
 			 if(choice==1)
 			 {
@@ -39,13 +43,22 @@ public class File_Explorer {
 	static int integerchoice()
 	{
 		int i=0;
+		String s="";
 		Scanner sc=new Scanner(System.in);
 		try {
-			i=sc.nextInt();	
+			s=sc.nextLine();	
 		}catch(Exception e) {
-			System.out.println("Invalid Input! Please Enter a Numeric Choice and Try Again!");
+			return(0);
 		}
-		return(i);
+		if(s.matches("[0-9]+"))
+		{
+			i=Integer.valueOf(s);
+			return(i);
+		}
+		else
+		{
+			return(0);	
+		}
 	}
 	
 	static String stringreader()
