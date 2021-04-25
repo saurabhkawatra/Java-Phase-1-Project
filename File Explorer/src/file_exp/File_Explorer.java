@@ -109,7 +109,7 @@ public class File_Explorer {
 		while(true)
 		{
 			int choice;
-			System.out.println("\n--------------Welcome to Main Menu---------------\n");
+			System.out.println("\n-------------------------------------------------------------Main Menu---------------------------------------------------------------\n");
 			System.out.println("You are in Directory--> "+"[ "+input_file+" ]\n");
 			System.out.println("Choose an option among the following to perform in this Directory");
 			System.out.println("1. Display the files in this Directory in Ascending order");
@@ -343,7 +343,7 @@ public class File_Explorer {
 						if(F.exists())
 						{
 							System.out.println("\n\t\tFile has been successfully created.");
-							System.out.println("File name :- "+name+"\tFile Location :- "+g);
+							System.out.println("File name :- \""+name+"\"\tFile Location :- "+g);
 							break;
 						}
 						else
@@ -389,13 +389,13 @@ public class File_Explorer {
 			List<File> Search=searchforkeyname(input_file,keyname);
 			if(Search.isEmpty())
 			{
-				System.out.println("\nSorry! There is no file with Name :- "+input+" in Directory :- "+directory);
+				System.out.println("\nSorry! There is no file with Name :- \""+input+"\" in Directory :- "+directory);
 				System.out.println("\nPlease try with Again with a vaild filename of the Directory!");
 				System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
 			}
 			else if(Search.size()==1)
 			{
-				System.out.println("The File :- "+Search.get(0).getName()+" would be permanantly deleted from Directory :- "+directory);
+				System.out.println("The File :- \""+Search.get(0).getName()+"\" would be permanantly deleted from Directory :- "+directory);
 				System.out.println("Please type 'Yes' if you wish to Proceed");
 				System.out.print("Type Confirmation here -->");
 				String confirm=stringreader();
@@ -405,7 +405,7 @@ public class File_Explorer {
 					if(Search.get(0).exists()==false)
 					{
 						System.out.println("\n\tFile has been successfully Deleted.");
-						System.out.println("File name :- "+Search.get(0).getName()+"from Directory :- "+Search.get(0));
+						System.out.println("File name :- \""+Search.get(0).getName()+"\" has been deleted from Directory :- "+Search.get(0));
 					}
 					else
 					{
@@ -429,7 +429,7 @@ public class File_Explorer {
 				{
 					System.out.printf("\n|%-3s| |%-40s| |%-40s| ",(Search.indexOf(e)+1),e.getName(),e);
 				}
-				System.out.println(("\n|"+Search.size()+1)+"| Delete all the above mentioned files.");
+				System.out.println("\n|"+(Search.size()+1)+"  | Delete all the above mentioned files.");
 				System.out.print("Enter the Choice Here--->");
 				int choice=0;String s="";Scanner sc=new Scanner(System.in);
 				try {s=sc.nextLine();if(s.matches("[0-9]+"))
