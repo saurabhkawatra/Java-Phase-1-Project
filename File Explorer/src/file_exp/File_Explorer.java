@@ -171,24 +171,27 @@ public class File_Explorer {
 				fileloc="";
 				fileloc=fileloc.concat(directory+"\\"+s);
 				temp = new File(fileloc);
+				long size=0;
+				size=temp.length();
+				
 				String[] type=s.split("[.]");
 				if(type.length>1)
 				{
-				System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,type[type.length-1],temp.length()+" bytes");
+				System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,type[type.length-1],size+" bytes");
 				System.out.println();
 				}
 				else
 				{
-				if(temp.isDirectory())
-				{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"Directory / Folder",temp.length()+" bytes");
+					if(temp.isDirectory())
+					{
+					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"Directory / Folder","----");
 					System.out.println();
-				}
-				else
-				{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"No Type",temp.length()+" bytes");
+					}
+					else
+					{
+					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"No Type",size+" bytes");
 					System.out.println();
-				}
+					}
 				
 				}
 					
@@ -247,6 +250,7 @@ public class File_Explorer {
 					if(searchresults.isEmpty())
 					{
 						System.out.println("\nSorry! No Files or Folders Found with the name \""+input+"\" inside the directory!");
+						System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
 					}
 					else
 					{
@@ -270,16 +274,17 @@ public class File_Explorer {
 								else
 								{
 									
-								     if(e.isDirectory())
-								      {
-									   System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"Directory / Folder",e.getAbsolutePath());
-									   System.out.println();
-								      }
-								     else
-								     {
-									  System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"No Type",e.getAbsolutePath());
-									  System.out.println();
-								     }
+									if(e.isDirectory())
+								      	
+									{
+										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"Directory / Folder",e.getAbsolutePath());
+									   	System.out.println();
+								      	}
+									else
+								     	{
+										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"No Type",e.getAbsolutePath());
+										System.out.println();
+								     	}
 						        } 	
 					      }
 				}
@@ -371,6 +376,7 @@ public class File_Explorer {
 		{
 			System.out.println("\nSorry! ["+directory+"] is an Empty Directory!");
 			System.out.println("\tNo Files to Delete in this directory!");
+			System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
 		}
 		else
 		{
@@ -389,11 +395,108 @@ public class File_Explorer {
 			}
 			else if(Search.size()==1)
 			{
-				
+				System.out.println("The File :- "+Search.get(0).getName()+" would be permanantly deleted from Directory :- "+directory);
+				System.out.println("Please type 'Yes' if you wish to Proceed");
+				System.out.print("Type Confirmation here -->");
+				String confirm=stringreader();
+				if(confirm.matches("[Y|y][e|E][s|S]"))
+				{
+					Search.get(0).delete();
+					if(Search.get(0).exists()==false)
+					{
+						System.out.println("\n\tFile has been successfully Deleted.");
+						System.out.println("File name :- "+Search.get(0).getName()+"from Directory :- "+Search.get(0));
+					}
+					else
+					{
+						System.out.println("Unable to Delete the File!");
+						System.out.println("Please make sure that File isn't open or in use.");
+						System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+					}
+				}
+				else
+				{
+					System.out.println("\n\t\t\tSorry! Unable to confirm your Response!");
+					System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+				}
 			}
 			else if(Search.size()>1)
 			{
+				System.out.println("\nThere are multiple files found with name:- \""+input+"\" in Directory:- "+directory);
+				System.out.println("\nChoose the numeric option to Delete the specific file.");
+				System.out.printf("\n|%-3s| |%-40s| |%-40s| ","No.","File Name","File Location");
+				for(File e:Search)
+				{
+					System.out.printf("\n|%-3s| |%-40s| |%-40s| ",(Search.indexOf(e)+1),e.getName(),e);
+				}
+				System.out.println(("\n|"+Search.size()+1)+"| Delete all the above mentioned files.");
+				System.out.print("Enter the Choice Here--->");
+				int choice=0;String s="";Scanner sc=new Scanner(System.in);
+				try {s=sc.nextLine();if(s.matches("[0-9]+"))
+				{choice=Integer.valueOf(s);}}catch(Exception e) {System.out.println("Invalid Input");}
 				
+				
+				if(0<choice&&choice<=Search.size())
+				{
+					System.out.println("The File :- "+Search.get(choice-1).getName()+" would be permanantly deleted from Directory :- "+directory);
+					System.out.println("Please type 'Yes' if you wish to Proceed");
+					System.out.print("Type Confirmation here -->");
+					String confirm=stringreader();
+					if(confirm.matches("[Y|y][e|E][s|S]"))
+					{
+						Search.get(choice-1).delete();
+						if(Search.get(choice-1).exists()==false)
+						{
+							System.out.println("\n\tFile has been successfully Deleted.");
+							System.out.println("File name :- "+Search.get(choice-1).getName()+" deleted from Directory :- "+Search.get(choice-1));
+						}
+						else
+						{
+							System.out.println("Unable to Delete the File!");
+							System.out.println("Please make sure that File isn't open or in use.");
+							System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+						}
+					}
+					else
+					{
+						System.out.println("\n\t\t\tSorry! Unable to confirm your Response!");
+						System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+					}
+				}
+				else if(choice==(Search.size()+1))
+				{
+					System.out.println("\nOption chosen to Delete all the above mentioned files in the directory ["+directory+"]");
+					System.out.println("Please type 'Yes' if you wish to Proceed");
+					System.out.print("Type Confirmation here -->");
+					String confirm=stringreader();
+					if(confirm.matches("[Y|y][e|E][s|S]"))
+					{
+						for(File e:Search)
+						{
+							e.delete();
+							if(e.exists()==false)
+							{
+								System.out.println("File name :- "+e.getName()+" deleted from Directory :- "+e);
+							}
+							else
+							{
+								System.out.println("Unable to Delete "+e.getName()+" from Directory :- "+e);
+								System.out.println("Please make sure that File isn't open or in use.");
+							}
+						}
+					}
+					else
+					{
+						System.out.println("\n\t\t\tSorry! Unable to confirm your Response!");
+						System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+					}
+				}
+				else
+				{
+					System.out.println("\nInvalid Input!");
+					System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
+				}
+					
 			}
 				
 		}
@@ -403,7 +506,7 @@ public class File_Explorer {
 	{
 		List<File> searchresults=new ArrayList<File>();
 		File[] filesindirectory;
-		filesindirectory=input_file.listFiles();           //saving all the files in the input_file directory in filesindirectory 
+		filesindirectory=input_file.listFiles();           //saving all the files of the input_file directory in filesindirectory 
 		int numofsubdirectories=0,c=0;
 		
 		if(filesindirectory!=null)
@@ -428,17 +531,17 @@ public class File_Explorer {
 			searchresults=searchforkeyname(input_file,keyname);
 			for(int i=0;i<numofsubdirectories;i++)
 			{
-				List<File> temp=null;
-				   temp=searchfile(subdirectoryfiles[i],keyname);
-				   if(temp==null)
-				   {
+					List<File> temp=null;
+					temp=searchfile(subdirectoryfiles[i],keyname);
+					if(temp==null)
+					{
 					   continue;
-				   }
-				   else
-				   {
-					   for(File e:temp)
-					    searchresults.add(e);
-				   }
+					}
+					else
+					{
+						for(File e:temp)	
+							searchresults.add(e);
+					}
 				   
 			}
 			return(searchresults);
