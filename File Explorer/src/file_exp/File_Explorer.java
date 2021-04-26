@@ -151,7 +151,7 @@ public class File_Explorer {
 	}
 	static void displayAscending(File input_file,String directory)
 	{
-		String[] list_of_files = input_file.list();
+		File[] list_of_files = input_file.listFiles();
 		File temp;
 		String fileloc="";
 		Arrays.sort(list_of_files);
@@ -166,30 +166,29 @@ public class File_Explorer {
 			for(int i=0;i<140;i++)
 			System.out.print("-");
 			System.out.println();
-			for(String s:list_of_files)
+			for(File s:list_of_files)
 			{
-				fileloc="";
-				fileloc=fileloc.concat(directory+"\\"+s);
+				
 				temp = new File(fileloc);
 				long size=0;
-				size=temp.length();
-				
-				String[] type=s.split("[.]");
+				size=s.length();
+				String name=s.getName();
+				String[] type=name.split("[.]");
 				if(type.length>1)
 				{
-				System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,type[type.length-1],size+" bytes");
+				System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,type[type.length-1],size+" bytes");
 				System.out.println();
 				}
 				else
 				{
 					if(temp.isDirectory())
 					{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"Directory / Folder","----");
+					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,"Directory / Folder","----");
 					System.out.println();
 					}
 					else
 					{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",s,"No Type",size+" bytes");
+					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,"No Type",size+" bytes");
 					System.out.println();
 					}
 				
@@ -381,7 +380,7 @@ public class File_Explorer {
 		else
 		{
 			System.out.println("\nOption chosen to Delete a file in the directory ["+directory+"]");
-			System.out.println("Please type the Name of the File that you wish to Delete.");
+			System.out.println("\nPlease type the Name of the File that you wish to Delete.");
 			System.out.print("Type the Name here -->");
 			String input=stringreader();
 			String keyname=Pattern.quote(input);
@@ -390,7 +389,7 @@ public class File_Explorer {
 			if(Search.isEmpty())
 			{
 				System.out.println("\nSorry! There is no file with Name :- \""+input+"\" in Directory :- "+directory);
-				System.out.println("\nPlease try with Again with a vaild filename of the Directory!");
+				System.out.println("\nPlease try with Again with a vaild Filename!");
 				System.out.println("\n<<<<<< Proceeding Back to Directory Operations <<<<<<<<\n");
 			}
 			else if(Search.size()==1)
