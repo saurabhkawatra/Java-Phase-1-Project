@@ -152,8 +152,6 @@ public class File_Explorer {
 	static void displayAscending(File input_file,String directory)
 	{
 		File[] list_of_files = input_file.listFiles();
-		File temp;
-		String fileloc="";
 		Arrays.sort(list_of_files);
 		int x=1;
 		if(list_of_files.length==0)
@@ -161,7 +159,7 @@ public class File_Explorer {
 		else
 		{
 			System.out.println("\nAll Files in Directory : "+directory+" are:\n");
-			System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ","No.","File Name (Ascending)","File Type","File Size");
+			System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ","No.","File Name (Ascending)","File Type","File Size");
 			System.out.println();
 			for(int i=0;i<140;i++)
 			System.out.print("-");
@@ -169,26 +167,25 @@ public class File_Explorer {
 			for(File s:list_of_files)
 			{
 				
-				temp = new File(fileloc);
 				long size=0;
 				size=s.length();
 				String name=s.getName();
 				String[] type=name.split("[.]");
-				if(type.length>1)
+				if(s.isDirectory())
 				{
-				System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,type[type.length-1],size+" bytes");
+				System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"Directory / Folder","----");
 				System.out.println();
 				}
 				else
 				{
-					if(temp.isDirectory())
+					if(type.length>1)
 					{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,"Directory / Folder","----");
+					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,type[type.length-1],size/1024+" KB");
 					System.out.println();
 					}
 					else
 					{
-					System.out.printf("|%-3s| |%-40s| |%-40s| |%-40s| ",x+++".",name,"No Type",size+" bytes");
+					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"No Type",size/1024+" KB");
 					System.out.println();
 					}
 				
