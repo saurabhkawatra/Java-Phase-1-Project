@@ -168,24 +168,48 @@ public class File_Explorer {
 			{
 				
 				long size=0;
-				size=s.length();
+				if(s.isDirectory()==false)
+					size=s.length();
+				else
+					size=getFolderSize(s);
+				
+				String sizetype="";
+				if(0<=size&&size<1024)
+				{
+					sizetype="Bytes";
+				}
+				else if(1024<=size&&size<1024*1024)
+				{
+					size=size/1024;
+					sizetype="KB";
+				}
+				else if(1024*1024<=size&&size<1024*1024*1024)
+				{
+					size=size/1024/1024;
+					sizetype="MB";
+				}
+				else if(1024*1024*1024<=size)
+				{
+					size=size/1024/1024/1024;
+					sizetype="GB";
+				}
 				String name=s.getName();
 				String[] type=name.split("[.]");
 				if(s.isDirectory())
 				{
-				System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"Directory / Folder","----");
+				System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"Directory / Folder",size+" "+sizetype);
 				System.out.println();
 				}
 				else
 				{
 					if(type.length>1)
 					{
-					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,type[type.length-1],size/1024+" KB");
+					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,type[type.length-1],size+" "+sizetype);
 					System.out.println();
 					}
 					else
 					{
-					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"No Type",size/1024+" KB");
+					System.out.printf("|%-4s| |%-70s| |%-20s| |%-40s ",x+++".",name,"No Type",size+" "+sizetype);
 					System.out.println();
 					}
 				
@@ -194,6 +218,31 @@ public class File_Explorer {
 			}
 		}
 					
+	}
+	static long getFolderSize(File dir)
+	{
+		File[] files=dir.listFiles();
+		long size=0;
+		if(files==null)
+		{
+			return(dir.length());
+		}
+		else 
+		{
+			for(File e:files)
+			{
+				if(e.isDirectory())
+				{
+					size=size+getFolderSize(e);
+				}
+				else
+				{
+					size=size+e.length();
+				}
+			}
+			
+			return(size);
+		}
 	}
 	static void operations(File input_file,String directory)
 	{
@@ -252,33 +301,57 @@ public class File_Explorer {
 					{
 						System.out.println("\nDeep Search Operation Performed over all files and sub-folders of Directory [ "+directory+" ]");
 						System.out.println("\n"+" ( "+searchresults.size()+" ) "+" Search Results Found :-\n");
-						System.out.printf("\n|%-3s| |%-40s| |%-30s| |%-70s| ","No.","File Name","File Type","File Location");
+						System.out.printf("\n|%-3s| |%-40s| |%-30s| |%-70s| |%-10s| ","No.","File Name","File Type","File Location","File Size");
 						System.out.println();
-						String resultname,path,name;
+						String name;
 						int x=1;
 						for(File e:searchresults)
 						{
-							 resultname=e.getName();
-							 path=e.getAbsolutePath();
+							long size=0;
+							if(e.isDirectory()==false)
+								size=e.length();
+							else
+								size=getFolderSize(e);
+							
+							String sizetype="";
+							if(0<=size&&size<1024)
+							{
+								sizetype="Bytes";
+							}
+							else if(1024<=size&&size<1024*1024)
+							{
+								size=size/1024;
+								sizetype="KB";
+							}
+							else if(1024*1024<=size&&size<1024*1024*1024)
+							{
+								size=size/1024/1024;
+								sizetype="MB";
+							}
+							else if(1024*1024*1024<=size)
+							{
+								size=size/1024/1024/1024;
+								sizetype="GB";
+							}
 							 name=e.getName();
 							 String[] type=name.split("[.]");
-								if(type.length>1)
+								if(e.isDirectory())
 								{
-								System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),type[type.length-1],e.getAbsolutePath());
-								System.out.println();
+									System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| |%-10s| ",x+++".",e.getName(),"Directory / Folder",e.getAbsolutePath(),size+" "+sizetype);
+								   	System.out.println();
 								}
 								else
 								{
 									
-									if(e.isDirectory())
+									if(type.length>1)
 								      	
-									{
-										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"Directory / Folder",e.getAbsolutePath());
-									   	System.out.println();
+										{
+										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| |%-10s| ",x+++".",e.getName(),type[type.length-1],e.getAbsolutePath(),size+" "+sizetype);
+										System.out.println();
 								      	}
 									else
 								     	{
-										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| ",x+++".",e.getName(),"No Type",e.getAbsolutePath());
+										System.out.printf("|%-3s| |%-40s| |%-30s| |%-70s| |%-10s| ",x+++".",e.getName(),"No Type",e.getAbsolutePath(),size+" "+sizetype);
 										System.out.println();
 								     	}
 						        } 	
