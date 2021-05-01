@@ -418,6 +418,7 @@ public class File_Explorer {
 						else
 						{
 							System.out.println("File not created due to an unknown issue. Please Try again!");
+							break;
 						}
 					}
 				}
