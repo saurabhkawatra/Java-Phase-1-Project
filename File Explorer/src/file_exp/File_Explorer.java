@@ -627,14 +627,22 @@ public class File_Explorer {
 	{
 		List<File> searchresults=new ArrayList<File>();
 		String[] filesindirectory;
+		String unquotekeyname=keyname.substring(2, keyname.length()-2);
 		filesindirectory=file.list();
 		for(String s:filesindirectory)
 		{
-			if(s.matches(keyname+"[.][0-9|a-z|A-Z]*")||s.matches(keyname))
+			try {
+				if(s.matches(keyname+"[.][0-9|a-z|A-Z]*")||s.matches(keyname)||s.matches("(?i:"+unquotekeyname+")[.][0-9|a-z|A-Z]*")||s.matches("(?i:"+unquotekeyname+")"))
+				{
+					File f=new File(file.getAbsolutePath()+"\\"+s);
+					searchresults.add(f);
+				}
+			}catch(Exception e)
 			{
-				File f=new File(file.getAbsolutePath()+"\\"+s);
-				searchresults.add(f);
+				System.out.println("Invalid Characters Entered for the File Name.");
+				break;
 			}
+			
 		}
 		return(searchresults);
 	}
